@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+    <head>
+        <script src="js/main.js"></script>
+        <title>Project Management Application</title>
+        <script src="https://kit.fontawesome.com/c0fe330beb.js" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="css/common.css">
+        <link rel="stylesheet" href="css/index.css">
+    </head>
+
+    <body onload="doStartupConfig()">
+        <div class="menu_bar">
+            <div class="logo_container">
+                <i class="fa-solid fa-m" style="font-size: 36px; color: blueviolet;"></i>
+                <i class="fa-solid fa-b" style="font-size: 36px; color: blueviolet;"></i>
+            </div>
+            <div class="company_title">
+                Company
+            </div>
+            <div class="menu_item active">
+                <a class="menu_item_link" href="index.html"> Employees</a>
+            </div>
+            <div class="menu_item">
+                <a class="menu_item_link" href="projects.html"> Projects</a>
+            </div>
+        </div>
+
+
+        <div class="add_container" id="add_container">
+            <button class="addEmplButton" onclick="initialDisplayAddForm()">Add New Employee</button>
+        </div>
+        
+<!-- formular introducere date in tabel -->
+        <div class="add_form_container" id="add_form_container">
+            <form id="add_form">
+                <div class="el_container">
+                    <div class="el_label">
+                        Name:
+                    </div>
+                    <input type="text" name="name" id="name" onkeyup="checkName()">
+                    <div class="error_txt" id="name_err">You must add a name!</div>
+                </div>
+                <div class="el_container">
+                    <div class="el_label">
+                        Age:
+                    </div>
+                    <input type="text" name="age" id="age" placeholder="18-65" onkeyup="checkAge()">
+                    <div class="error_txt" id="age_err">You must add age between 18 and 65!</div>
+                </div>
+                <div class="el_container">
+                    <div class="el_label">
+                        Gender:
+                    </div>
+                    <input type="text" name="gender" id="gender" placeholder="F or M" onkeyup="checkGender()">
+                    <div class="error_txt" id="gender_err">You must type either F or M!</div>
+                </div>
+                <div class="el_container">
+                    <div class="el_label">
+                        Birthdate:
+                    </div>
+                    <input type="text" name="birthdate" id="birthdate" placeholder="YYYY-MM-DD" onkeyup="checkBirthdate()">
+                    <div class="error_txt" id="birthdate_err">You must use the suggested format</div>
+                </div>
+                <div class="el_container">
+                    <div class="el_label">
+                        Phone:
+                    </div>
+                    <input type="tel" name="phone" id="phone" placeholder="0722334455" onkeyup="checkElement('phone')">
+                    <div class="error_txt" id="phone_err">You must use the suggested format</div>
+                </div>
+                <div class="el_container">
+                    <div class="el_label">
+                        Email:
+                    </div>
+                    <input type="email" name="email" id="email" placeholder="name@example.com" onkeyup="checkElement('email')">
+                    <div class="error_txt" id="email_err">You must use the suggested format</div>
+                </div>
+
+                <div>
+                    <button class="cancelButton" onclick="cancelAddForm()" type="button">Cancel</button>
+                    <button class="addEmplButton addButton_modify" onclick="addNewUser()" type="button" id="add_button" disabled>Add</button>
+                    <button class="addEmplButton saveEditButton addButton_modify" onclick="saveEditEmpl()" type="button" id="edit_button" disabled>Edit</button>
+                    <button type="submit" style="display: none;">Submit</button>
+                </div>
+            </form>
+        </div>
+
+        <div id="no_empl_container" class="no_empl_container" style="font-weight: bold;">
+            No employees saved yet.
+        </div>
+
+        <!-- tabel utilizatori -->
+        <div class="table_container" id="table_container">
+            <table id="employees_table" cellspacing="0" cellpadding="7"></table>
+        </div>
+    </body>
+</html>

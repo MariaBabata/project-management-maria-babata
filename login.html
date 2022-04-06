@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+    <head>
+        <script src="js/login.js"></script>
+        <link rel="stylesheet" href="css/login.css">
+        <script src="https://kit.fontawesome.com/c0fe330beb.js" crossorigin="anonymous"></script>
+        <title>Login to Project Management Application</title>
+    </head>
+
+    <body onload="checkLoggedInUser()">
+
+        <div class="login_container" onkeydown="handleEnter(event)">
+
+            <div class="column_container1">
+                <i class="fa-solid fa-user" style="font-size: 80px; "></i>
+            </div>
+
+            <div class="column_container2">
+                <h2>Please login</h2>
+                <div class="input_field">
+                <span class="input_label">Username: </span> 
+                        <input type="text" name="username" id="username">
+                
+                </div>
+                
+                <div class="input_field">
+                    <span class="input_label">Password: </span>
+                        <input type="password" name="password" id="password">
+                    
+                    
+                </div>
+
+                <div class="success_msg msg_text" id="try_success">
+                    Login successful... Redirecting
+                </div>
+                <div class="error_msg msg_text" id="try_error">
+                    Wrong credentials... Please try again!
+                </div>
+
+                <div class="button_container">
+                    <button class="myButton" onclick="checkUserPass()">LOGIN</button>
+                </div>
+            </div>
+        </div>
+
+
+
+    </body>
+</html>
