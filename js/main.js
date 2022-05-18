@@ -5,12 +5,8 @@ function doStartupConfig(){
 
 function checkUserLogin() {
     const userLoggedIn = sessionStorage.getItem('userLogged');
-    // console.log(userLoggedIn);
-  
         if (userLoggedIn !== 'logged'){
-        //'logged' - cheie de tip string - verifica daca utilizatorul este logat
         window.location.replace('login.html');
-
         } 
 }
 
@@ -51,8 +47,6 @@ function checkUserLogin() {
     const emplFromLocalStorage = localStorage.getItem('employeesArr');
     let employeesArr = JSON.parse(emplFromLocalStorage);
 
-
-
 function createTable(){
 
     if(employeesArr && employeesArr.length === 0){
@@ -64,7 +58,6 @@ function createTable(){
 
         let tableStr = '<tr><th>No.</th><th>Name</th><th>Age</th><th>Gender</th><th>Project</th><th>Birthdate</th><th>Hired at</th><th>Phone</th><th>Email</th><th>Actions</th></tr>'; 
         employeesArr.forEach((person, i) => {
-            // console.log(i);
             // console.log(person);
             
             tableStr += createRow(person, i);
@@ -75,21 +68,22 @@ function createTable(){
 
 }
 
-
 function deleteEmpl(i){
     // console.log('index:', i);
 
     if(confirm('Are you sure you want to delete ' + employeesArr[i].name + '?')){
-        // console.log('deleting...');
         employeesArr.splice(i, 1);
         localStorage.setItem('employeesArr', JSON.stringify(employeesArr));
         createTable();
     }
 }
 
-function editEmpl(i) {
-    displayAddForm();
+let saveEmplIndex = 0;
 
+function editEmpl(i) {
+    saveEmplIndex = i;
+    displayAddForm(false);
+  
     document.getElementById('add_button').style.display = 'none';
     document.getElementById('edit_button').style.display = 'inline-block';
     const validationKeys = Object.keys(validationObj);
@@ -100,17 +94,24 @@ function editEmpl(i) {
 
     checkValidationObj();
 
-    // document.getElementById("name").value = employeesArr[i].name;
-    // document.getElementById("age").value = employeesArr[i].age;
-    // document.getElementById("gender").value = employeesArr[i].gender;
-    // document.getElementById("birthdate").value = employeesArr[i].birthdate;
-    // document.getElementById("phone").value = employeesArr[i].phone;
-    // document.getElementById("email").value = employeesArr[i].email;
+}
+
+
+function saveEditEmpl() {
+    // console.log('index', saveEmplIndex)
+    const validationKeys = Object.keys(validationObj);
+    validationKeys.forEach(key => {
+        employeesArr[saveEmplIndex][key] = document.getElementById(key).value;
+    });
+   localStorage.setItem('employeesArr', JSON.stringify(employeesArr));
+   createTable();
+   document.getElementById('add_form_container').style.display = 'none';
+   document.getElementById('add_container').style.display = 'block';
+   
 }
 
 function createRow(person, i){
     let rowStr = '<tr>';
-
     const projectName = person.project ? person.project : '-';
     rowStr += '<td>' + (i + 1) + '</td>';
     rowStr += '<td>' + person.name + '</td>';
@@ -126,15 +127,17 @@ function createRow(person, i){
     return rowStr;
 }
 
-function initialDisplayAddForm(){
-    document.getElementById('add_button').style.display = 'inline-block';
-    document.getElementById('edit_button').style.display = 'none';
-    displayAddForm();
-}
-
-function displayAddForm() {
+function displayAddForm(resetForm) {
     document.getElementById('add_form_container').style.display = 'block';
     document.getElementById('add_container').style.display = 'none';
+
+    document.getElementById('add_button').style.display = 'inline-block';
+    document.getElementById('edit_button').style.display = 'none';
+
+    if(resetForm) {
+        document.getElementById('add_form').reset();
+    }
+    // validationObj = initialValidationObj;
 
     const validationKeys = Object.keys(validationObj);
     validationKeys.forEach(key => {
@@ -154,22 +157,18 @@ function cancelAddForm() {
 }
 
 function clearAndHideForm(){
-    document.getElementById('add_form').reset(); 
+    document.getElementById('add_form').reset(); //stergere date
     document.getElementById('add_form_container').style.display = 'none';
     document.getElementById('add_container').style.display = 'block';
 }
 
-
-
 function addNewUser() {
     const newDate = new Date();
     const year = newDate.getFullYear();
-    //month: lunile incep de la 0!
+    //month: lunile incep de la 0
     const month = newDate.getMonth() + 1;
     const monthToAdd = (month < 10) ? '0' + month : month;
-
     const day = newDate.getDate();
-
 
     const newEmplObj = {
       name: document.getElementById('name').value,
@@ -186,7 +185,6 @@ function addNewUser() {
     localStorage.setItem('employeesArr', JSON.stringify(employeesArr));
     createTable();
     clearAndHideForm();
-
 }
 
 let initialValidationObj = {
@@ -271,7 +269,6 @@ function checkBirthdate(){
     const birthdate_el = document.getElementById('birthdate');
     const birthdate = birthdate_el.value;
     const pattern = /^\d{4}-\d{2}-\d{2}$/g;
-  
     const birthArr = birthdate.split("-");
     const day = birthArr[2];
     const month = birthArr[1];
@@ -280,9 +277,7 @@ function checkBirthdate(){
     const day_pattern = /^(0[1-9]|1[0-9]|2[0-9]|3[0-1])$/g;
     const month_pattern = /^(0[1-9]|1[0-2])$/g;
     const year_pattern = /^(195[7-9]|19[6-9][0-9]|200[0-4])$/g;
-    //  console.log(day_pattern.test(day));
-    //  console.log(month_pattern.test(month));
-    //  console.log(year_pattern.test(year));
+
     if(birthdate !== '')
         if(pattern.test(birthdate) && day_pattern.test(day) && month_pattern.test(month) && year_pattern.test(year)){
         document.getElementById('birthdate_err').style.display = 'none';
